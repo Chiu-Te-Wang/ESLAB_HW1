@@ -61,7 +61,8 @@ var do_respond_to_an_HTTP_request = function (req, res) {
       res.write(respbody);
       res.end();
     };
-    console.log(timestamp_str() + ' >>>> "' + pattern + '"');
+    console.log(req.connection.remoteAddress + ' ' + timestamp_str() +
+                ' >>>> "' + pattern + '"');
     if (typeof reqhandlers[pattern] === 'function')
       reqhandlers[pattern](responder, reqbody, reqheaders);
     else {
