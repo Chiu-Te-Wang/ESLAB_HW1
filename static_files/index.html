@@ -13,14 +13,27 @@
 
     <div>
       <div class="request-zone">
-        <h2>Your request to server:</h2>
-        <textarea id="user-input-area" autofocus></textarea>
-        <button id="user-input-send-btn">send</button>
+        <div>Nickname : </div>
+        <input id="nickname-input-text" type="text" size="15">
+        <div id="emoji-input-radio">
+          <label><input name="emoji" type="radio" value="0">&#128513</label>
+          <label><input name="emoji" type="radio" value="1">&#128514</label>
+          <label><input name="emoji" type="radio" value="2">&#128515</label>
+          <label><input name="emoji" type="radio" value="3">&#128520</label>
+          <label><input name="emoji" type="radio" value="4">&#128519</label>
+        </div>
+        <div>Message</div>
+        <input id="message-input-text" type="text" size="60"><br>
+
+        <button id="user-submit-send-btn">Submit</button>
+        <button id="user-readall-send-btn">Read All</button>
+        <input id="read-nickname-message-text" type="text" size="15">
+        <button id="read-nickname-message-send-btn">Read</button>
       </div>
 
       <div class="response-zone">
-        <h2>Server response history:</h2>
-        <textarea readonly id="log-area"></textarea>
+        <h2>Message History:</h2>
+        <div id="log-area"></div>
       </div>
     </div>
 

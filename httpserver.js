@@ -63,8 +63,9 @@ var do_respond_to_an_HTTP_request = function (req, res) {
     };
     console.log(req.connection.remoteAddress + ' ' + timestamp_str() +
                 ' >>>> "' + pattern + '"');
-    if (typeof reqhandlers[pattern] === 'function')
+    if (typeof reqhandlers[pattern] === 'function'){
       reqhandlers[pattern](responder, reqbody, reqheaders);
+    }
     else {
       res.statusCode = 400;
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
