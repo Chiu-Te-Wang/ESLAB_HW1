@@ -64,8 +64,6 @@ var get_emoji_value = function(target_element){
       return parseInt(target_element.children[i].children[0].value);
     }
   }
-  //Shouldn't get here
-  console.log("emoji get out of range.")
 };
 
 var send_to_server = function (where,object_to_send=null) {
@@ -77,6 +75,9 @@ var send_to_server = function (where,object_to_send=null) {
   }
   else if(where === "/submit"){
     http_post(where, object_to_send, result_from_server_callback_submit);
+  }
+  else if(where === "/thumbup"){
+	http_post(where, object_to_send, result_from_server_callback_thumbup);
   }
 };
 
@@ -93,8 +94,14 @@ var result_from_server_callback_read_all = function (result) {
     for(var i=0; i<result.length;i++){
       if(result[i] === ""){continue;}
       print_to_log_textarea(result[i],i);
+	  addbtn(i);
+	  
     }
   }
+};
+
+var result_from_server_callback_thumbup = function(result){
+	console.log(result);
 };
 
 var print_to_log_textarea = function(resultJson, index){
@@ -104,7 +111,32 @@ var print_to_log_textarea = function(resultJson, index){
   div_elm.innerHTML += emojiArr[resultJson.emoji]+" : ";
   div_elm.textContent += resultJson.message;
   div_elm.innerHTML += " ("+timestampConverter(resultJson.timestamp)+")<br>";
-}
+  
+  div_elm.innerHTML += "<div id=\"thumb"+index+"\"></div>"
+  if(resultJson.thumb === undefined){
+	  return;
+  }
+  var thumb = document.getElementById("thumb"+index);
+  var le = resultJson.thumb.length;
+  thumb.textContent += le+" persons like this!  ( "
+  for(var i = 0; i<le;i++){
+	thumb.textContent += resultJson.thumb[i] + ", ";
+  }
+  thumb.textContent += ")";
+  thumb.style.color = "blue";
+};
+
+function addbtn(index){
+	var div_elm = document.getElementById("messsage"+index);
+	div_elm.innerHTML +=  "<button id=\"btn"+index+"\" onclick=\"thumbup(this.id)\">Thumb up</button>" ;
+
+};
+function thumbup(id){
+	var nickname = input_nickname_elm.value;
+	var index = parseInt(id.substring(3));
+	send_to_server('/thumbup',{'nickname':nickname, "index":index});
+	console.log(index);
+};
 
 var timestampConverter = function (UNIX_timestamp) {
   var ensure_two_digits = function (num) {
